@@ -1,10 +1,16 @@
+const mongoose = require("mongoose");
+
+function isValidObjectId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
+}
+
 function validateJobData(body) {
   const {
     title,
-    companyName,
+    company,
     location,
     salary,
-    jobType,
+    type,
     description,
     qualifications,
   } = body;
@@ -13,7 +19,7 @@ function validateJobData(body) {
     return "Title is required and must be a string";
   }
 
-  if (!companyName || typeof companyName !== "string") {
+  if (!company || typeof company !== "string") {
     return "Company name is required and must be a string";
   }
 
@@ -25,7 +31,7 @@ function validateJobData(body) {
     return "Location is required and must be a string";
   }
 
-  if (!jobType || typeof jobType !== "string") {
+  if (!type || typeof type !== "string") {
     return "Job type is must be one of these Full-time (On-site), Part-time (On-site), Full-time (Remote) and Part-time (Remote)";
   }
 
@@ -40,4 +46,14 @@ function validateJobData(body) {
   return null;
 }
 
-module.exports = { validateJobData };
+function validateJobId(params) {
+  const { id } = params;
+
+  if (!isValidObjectId(id)) {
+    return "Job id must be a valid object ID";
+  }
+
+  return null;
+}
+
+module.exports = { validateJobData, validateJobId };

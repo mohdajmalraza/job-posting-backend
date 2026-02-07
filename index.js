@@ -1,7 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const { initializeDatabase } = require("./db/db.config.js");
-const { addJob, getJobs } = require("./controllers/job.controller.js");
+const {
+  addJob,
+  getJobs,
+  getJobById,
+} = require("./controllers/job.controller.js");
 
 const app = express();
 initializeDatabase();
@@ -11,6 +15,8 @@ app.use(express.json());
 
 app.post("/jobs", addJob);
 app.get("/jobs", getJobs);
+
+app.get("/jobs/:id", getJobById);
 
 app.get("/", (req, res) => {
   return res.send("Job Posting App Backend is listening...");

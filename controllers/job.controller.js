@@ -1,5 +1,12 @@
-const { createjob, fetchJobs } = require("../services/job.service");
-const { validateJobData } = require("../validations/job.validation");
+const {
+  createjob,
+  fetchJobs,
+  fetchJobById,
+} = require("../services/job.service");
+const {
+  validateJobData,
+  validateJobId,
+} = require("../validations/job.validation");
 
 const addJob = async (req, res) => {
   const validationError = validateJobData(req.body);
@@ -10,20 +17,20 @@ const addJob = async (req, res) => {
   try {
     const {
       title,
-      companyName,
+      company,
       salary,
       location,
-      jobType,
+      type,
       description,
       qualifications,
     } = req.body;
 
     const job = await createjob({
       title,
-      companyName,
+      company,
       salary,
       location,
-      jobType,
+      type,
       description,
       qualifications,
     });
@@ -33,10 +40,10 @@ const addJob = async (req, res) => {
       job: {
         id: job._id,
         title: job.title,
-        companyName: job.companyName,
+        company: job.company,
         salary: job.salary,
         location: job.location,
-        jobType: job.jobType,
+        type: job.type,
         description: job.description,
         qualifications: job.qualifications,
       },
@@ -59,19 +66,19 @@ const getJobs = async (req, res) => {
       ({
         _id,
         title,
-        companyName,
+        company,
         salary,
         location,
-        jobType,
+        type,
         description,
         qualifications,
       }) => ({
         id: _id,
         title,
-        companyName,
+        company,
         salary,
         location,
-        jobType,
+        type,
         description,
         qualifications,
       }),
@@ -86,4 +93,38 @@ const getJobs = async (req, res) => {
   }
 };
 
-module.exports = { addJob, getJobs };
+const getJobById = async (req, res) => {
+  const validationError = validateJobId(req.params);
+  if (validationError) {
+    return res.status(400).json({ error: validationError });
+  }
+
+  try {
+    const id = req.params.id;
+
+    const job = await fetchJobById(id);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    return res.status(200).json({
+      message: "Job fetched successfully",
+      job: {
+        id: job._id,
+        title: job.title,
+        company: job.company,
+        salary: job.salary,
+        location: job.location,
+        type: job.type,
+        description: job.description,
+        qualifications: job.qualifications,
+      },
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { addJob, getJobs, getJobById };

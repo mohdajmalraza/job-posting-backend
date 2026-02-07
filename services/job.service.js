@@ -8,4 +8,8 @@ async function fetchJobs() {
   return await jobModel.find();
 }
 
-module.exports = { createjob, fetchJobs };
+async function fetchJobById(id) {
+  return await jobModel.findById(id);
+}
+
+module.exports = { createjob, fetchJobs, fetchJobById };

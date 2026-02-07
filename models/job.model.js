@@ -6,7 +6,7 @@ const JobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    companyName: {
+    company: {
       type: String,
       required: true,
     },
@@ -18,7 +18,7 @@ const JobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    jobType: {
+    type: {
       type: String,
       required: true,
       enum: [
