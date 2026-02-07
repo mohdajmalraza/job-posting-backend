@@ -1,6 +1,13 @@
 function validateJobData(body) {
-  const { title, companyName, salary, jobType, description, qualifications } =
-    body;
+  const {
+    title,
+    companyName,
+    location,
+    salary,
+    jobType,
+    description,
+    qualifications,
+  } = body;
 
   if (!title || typeof title !== "string") {
     return "Title is required and must be a string";
@@ -12,6 +19,10 @@ function validateJobData(body) {
 
   if (!salary || typeof salary !== "number") {
     return "Salary is required and must be a number";
+  }
+
+  if (!location || typeof location !== "string") {
+    return "Location is required and must be a string";
   }
 
   if (!jobType || typeof jobType !== "string") {

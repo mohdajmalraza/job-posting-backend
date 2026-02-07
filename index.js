@@ -1,13 +1,16 @@
 const express = require("express");
+const cors = require("cors");
 const { initializeDatabase } = require("./db/db.config.js");
-const { addJob } = require("./controllers/job.controller.js");
+const { addJob, getJobs } = require("./controllers/job.controller.js");
 
 const app = express();
 initializeDatabase();
 
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 
 app.post("/jobs", addJob);
+app.get("/jobs", getJobs);
 
 app.get("/", (req, res) => {
   return res.send("Job Posting App Backend is listening...");
