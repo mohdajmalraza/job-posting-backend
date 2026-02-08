@@ -56,4 +56,29 @@ function validateJobId(params) {
   return null;
 }
 
-module.exports = { validateJobData, validateJobId };
+function validateJobDelete(params) {
+  const { id } = params;
+
+  if (!isValidObjectId(id)) {
+    return "Job id must be a valid object ID";
+  }
+
+  return null;
+}
+
+function validateJobSearch(queryParam) {
+  const query = queryParam.query;
+
+  if (!query || typeof query !== "string") {
+    return "Search query is required and must be a string";
+  }
+
+  return null;
+}
+
+module.exports = {
+  validateJobData,
+  validateJobId,
+  validateJobDelete,
+  validateJobSearch,
+};

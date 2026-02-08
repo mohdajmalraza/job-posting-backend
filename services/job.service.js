@@ -12,4 +12,12 @@ async function fetchJobById(id) {
   return await jobModel.findById(id);
 }
 
-module.exports = { createjob, fetchJobs, fetchJobById };
+async function deleteJob(id) {
+  return await jobModel.findByIdAndDelete(id);
+}
+
+async function searchJobs(query) {
+  return await jobModel.find({ title: { $regex: query, $options: "i" } });
+}
+
+module.exports = { createjob, fetchJobs, fetchJobById, deleteJob, searchJobs };
